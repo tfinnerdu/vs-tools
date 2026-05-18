@@ -64,6 +64,58 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
+  <!-- AssemblyInspector tool window -->
+  <ItemGroup>
+    <Compile Include="AssemblyInspector\AssemblyInspectorWindow.cs" />
+    <Compile Include="AssemblyInspector\AssemblyInspectorWindowControl.xaml.cs" />
+    <Compile Include="AssemblyInspector\AssemblyInspectorViewModel.cs" />
+    <Compile Include="AssemblyInspector\Models\AssemblyNode.cs" />
+    <Compile Include="AssemblyInspector\Services\DecompilerService.cs" />
+    <Page Include="AssemblyInspector\AssemblyInspectorWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <!-- DependencyMap tool window -->
+  <ItemGroup>
+    <Compile Include="DependencyMap\DependencyMapWindow.cs" />
+    <Compile Include="DependencyMap\DependencyMapWindowControl.xaml.cs" />
+    <Compile Include="DependencyMap\DependencyMapViewModel.cs" />
+    <Compile Include="DependencyMap\Models\GraphNode.cs" />
+    <Compile Include="DependencyMap\Models\GraphEdge.cs" />
+    <Compile Include="DependencyMap\Services\RoslynGraphBuilder.cs" />
+    <Compile Include="DependencyMap\Services\ForceLayoutService.cs" />
+    <Page Include="DependencyMap\DependencyMapWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <!-- CssInspector tool window -->
+  <ItemGroup>
+    <Compile Include="CssInspector\CssInspectorWindow.cs" />
+    <Compile Include="CssInspector\CssInspectorWindowControl.xaml.cs" />
+    <Compile Include="CssInspector\CssInspectorViewModel.cs" />
+    <Page Include="CssInspector\CssInspectorWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <!-- DocGenerator tool window -->
+  <ItemGroup>
+    <Compile Include="DocGenerator\DocGeneratorWindow.cs" />
+    <Compile Include="DocGenerator\DocGeneratorWindowControl.xaml.cs" />
+    <Compile Include="DocGenerator\DocGeneratorViewModel.cs" />
+    <Compile Include="DocGenerator\Services\XmlDocGeneratorService.cs" />
+    <Compile Include="DocGenerator\Services\HtmlDocSiteGenerator.cs" />
+    <Page Include="DocGenerator\DocGeneratorWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
   <!-- Additional tool windows (TestDataSeeder, ApiDriftChecker, SolutionScore, CodeQuery) -->
   <ItemGroup>
     <Compile Include="TestDataSeeder\TestDataSeederWindow.cs" />

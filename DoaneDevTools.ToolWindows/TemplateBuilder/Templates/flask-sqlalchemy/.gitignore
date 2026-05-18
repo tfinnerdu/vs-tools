@@ -1,25 +1,10 @@
-# Python
-.venv/
+.env
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
-*.pyd
+.venv/
+venv/
 *.egg-info/
 dist/
 build/
-
-# Environment
-.env
-.env.local
-
-# Logs
-*.log
-*.err.log
-
-# IDE
-.idea/
-.vscode/
-
-# OS
-.DS_Store
-Thumbs.db
+.pytest_cache/

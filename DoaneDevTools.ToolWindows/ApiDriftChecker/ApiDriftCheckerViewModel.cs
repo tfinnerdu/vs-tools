@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DoaneDevTools.ToolWindows.ApiDriftChecker.Models;
 using DoaneDevTools.ToolWindows.ApiDriftChecker.Services;
-using DoaneDevTools.ToolWindows.Shared;
+using DoaneDevTools.ToolWindows.Infrastructure;
 
 namespace DoaneDevTools.ToolWindows.ApiDriftChecker
 {

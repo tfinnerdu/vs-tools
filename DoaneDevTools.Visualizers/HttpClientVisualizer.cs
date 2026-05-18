@@ -106,37 +106,4 @@ namespace DoaneDevTools.Visualizers
         }
     }
 
-    public class HttpResponseVisualizerObjectSource : VisualizerObjectSource
-    {
-        public override void GetData(object target, Stream outgoingData)
-        {
-            var response = (HttpResponseMessage)target;
-            var body = "(unable to read body — already consumed or stream not seekable)";
-            try
-            {
-                // ReadAsStringAsync is async but we're on a sync path in the debuggee
-                body = response.Content?.ReadAsStringAsync().GetAwaiter().GetResult() ?? "(no content)";
-                if (body.Length > 4096) body = body[..4096] + "\n[truncated]";
-            }
-            catch { }
-
-            var headers = new System.Collections.Generic.Dictionary<string, string>();
-            foreach (var h in response.Headers)
-                headers[h.Key] = string.Join(", ", h.Value);
-
-            var info = new
-            {
-                StatusCode = (int)response.StatusCode,
-                ReasonPhrase = response.ReasonPhrase,
-                RequestUri = response.RequestMessage?.RequestUri?.ToString() ?? "(unknown)",
-                Headers = headers,
-                Body = body
-            };
-
-            var json = JsonSerializer.Serialize(info, new JsonSerializerOptions { WriteIndented = true });
-            using var writer = new StreamWriter(outgoingData, leaveOpen: true);
-            writer.Write(json);
-            writer.Flush();
-        }
-    }
 }

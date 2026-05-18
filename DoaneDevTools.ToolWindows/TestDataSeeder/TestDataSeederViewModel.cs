@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DoaneDevTools.ToolWindows.Shared;
+using DoaneDevTools.ToolWindows.Infrastructure;
 using DoaneDevTools.ToolWindows.TestDataSeeder.Models;
 using DoaneDevTools.ToolWindows.TestDataSeeder.Services;
 

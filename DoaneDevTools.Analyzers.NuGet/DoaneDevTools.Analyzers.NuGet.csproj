@@ -11,7 +11,28 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
   </PropertyGroup>
+  <PropertyGroup>
+    <PackageProjectUrl>https://github.com/tfinnerdu/vs-tools</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tfinnerdu/vs-tools</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © Doane University</Copyright>
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DoaneDevTools.Analyzers\DoaneDevTools.Analyzers.csproj" />
+    <ProjectReference Include="..\DoaneDevTools.Analyzers\DoaneDevTools.Analyzers.csproj"
+                      ReferenceOutputAssembly="false"
+                      SkipGetTargetFrameworkProperties="true" />
+  </ItemGroup>
+  <!-- Place the analyzer DLL in the NuGet analyzers folder -->
+  <ItemGroup>
+    <None Include="..\DoaneDevTools.Analyzers\bin\$(Configuration)\netstandard2.0\DoaneDevTools.Analyzers.dll"
+          Pack="true"
+          PackagePath="analyzers/dotnet/cs"
+          Visible="false" />
+    <None Include="..\DoaneDevTools.Analyzers\bin\$(Configuration)\netstandard2.0\DoaneDevTools.Analyzers.pdb"
+          Pack="true"
+          PackagePath="analyzers/dotnet/cs"
+          Visible="false"
+          Condition="Exists('..\DoaneDevTools.Analyzers\bin\$(Configuration)\netstandard2.0\DoaneDevTools.Analyzers.pdb')" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,12 @@
+{
+  "name": "Flask + Vite Frontend",
+  "category": "Python/Flask",
+  "description": "Flask API backend with Vite-bundled frontend (Vue/React), proxied in dev via Vite, served from dist/ in prod",
+  "variables": [
+    { "name": "service_name", "prompt": "Service name (snake_case)", "type": "string" },
+    { "name": "port", "prompt": "Flask port", "type": "int", "default": 5000 },
+    { "name": "vite_port", "prompt": "Vite dev server port", "type": "int", "default": 5173 },
+    { "name": "frontend_framework", "prompt": "Frontend framework", "type": "choice", "choices": ["vue", "react"], "default": "vue" }
+  ],
+  "output_files": ["app.py", "requirements.txt", "start-local.ps1", "frontend/package.json", "frontend/vite.config.js", "frontend/index.html", ".env.example", ".gitignore"]
+}

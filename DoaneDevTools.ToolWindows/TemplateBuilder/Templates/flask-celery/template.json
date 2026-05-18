@@ -1,0 +1,11 @@
+{
+  "name": "Flask + Celery Worker",
+  "category": "Python/Flask",
+  "description": "Flask API with Celery async task queue backed by Redis; includes health endpoint, task dispatch, and result polling",
+  "variables": [
+    { "name": "service_name", "prompt": "Service name (snake_case)", "type": "string" },
+    { "name": "port", "prompt": "Flask port", "type": "int", "default": 5000 },
+    { "name": "celery_queue", "prompt": "Default Celery queue name", "type": "string", "default": "default" }
+  ],
+  "output_files": ["app.py", "tasks.py", "celery_app.py", "requirements.txt", "start-local.ps1", ".env.example", ".gitignore"]
+}

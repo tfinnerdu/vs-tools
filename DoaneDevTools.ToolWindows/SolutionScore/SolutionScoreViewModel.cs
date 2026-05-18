@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using DoaneDevTools.ToolWindows.Shared;
+using DoaneDevTools.ToolWindows.Infrastructure;
 
 namespace DoaneDevTools.ToolWindows.SolutionScore
 {

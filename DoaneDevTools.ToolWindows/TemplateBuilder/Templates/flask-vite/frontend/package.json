@@ -1,0 +1,17 @@
+{
+  "name": "{{ service_name }}-frontend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "{{ frontend_framework }}": "latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-{{ frontend_framework }}": "latest",
+    "vite": "^5.0.0"
+  }
+}

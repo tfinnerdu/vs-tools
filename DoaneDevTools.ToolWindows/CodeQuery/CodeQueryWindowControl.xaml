@@ -6,6 +6,10 @@
              mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="900"
              Background="#1E1E1E">
 
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis"/>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

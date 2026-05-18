@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "claude/**", "feature/**" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore DoaneDevTools.sln
+
+      - name: Build solution
+        run: msbuild DoaneDevTools.sln /p:Configuration=Release /p:Platform="Any CPU" /m
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DoaneDevTools-VSIX
+          path: DoaneDevTools.Vsix/bin/Release/**/*.vsix
+          if-no-files-found: warn
+
+      - name: Upload NuGet artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DoaneAnalyzers-NuGet
+          path: DoaneDevTools.Analyzers.NuGet/bin/Release/**/*.nupkg
+          if-no-files-found: warn
+
+  publish-nupkg:
+    needs: build
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore packages
+        run: nuget restore DoaneDevTools.sln
+
+      - name: Pack NuGet
+        run: msbuild DoaneDevTools.Analyzers.NuGet/DoaneDevTools.Analyzers.NuGet.csproj /p:Configuration=Release /t:Pack
+
+      - name: Push to GitHub Packages
+        run: |
+          nuget sources add -name "github" -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -username ${{ github.actor }} -password ${{ secrets.GITHUB_TOKEN }}
+          nuget push DoaneDevTools.Analyzers.NuGet/bin/Release/**/*.nupkg -Source "github" -SkipDuplicate
+
+  publish-docs:
+    needs: build
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download VSIX artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: DoaneDevTools-VSIX
+
+      - name: Deploy docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          destination_dir: docs

@@ -1,0 +1,11 @@
+{
+  "name": "Flask Conductor Worker",
+  "category": "Python/Flask",
+  "description": "Flask service that registers and runs as a Conductor/Ethos workflow worker task",
+  "variables": [
+    { "name": "service_name", "prompt": "Service name (snake_case)", "type": "string" },
+    { "name": "worker_task_name", "prompt": "Conductor task name (e.g. du_sync_banner)", "type": "string" },
+    { "name": "port", "prompt": "Local port", "type": "int", "default": 5001 }
+  ],
+  "output_files": ["app.py", "worker.py", "requirements.txt", "start-local.ps1", ".env.example", ".gitignore"]
+}
