@@ -1,0 +1,12 @@
+{
+  "name": "Conductor — Ethos→Salesforce Person Sync",
+  "category": "Conductor Workflows",
+  "description": "Netflix Conductor workflow that polls Ethos Integration for person change-events and syncs them to Salesforce CRM. Includes polling task, transform task, upsert task, and error-handling sub-workflow.",
+  "variables": [
+    { "name": "workflow_name", "prompt": "Workflow name (no spaces)", "type": "string", "default": "ethos_sf_person_sync" },
+    { "name": "ethos_base_url", "prompt": "Ethos Integration base URL", "type": "string", "default": "https://integrate.elluciancloud.com" },
+    { "name": "sf_api_version", "prompt": "Salesforce API version", "type": "string", "default": "v59.0" },
+    { "name": "poll_interval_seconds", "prompt": "Polling interval (seconds)", "type": "int", "default": 60 }
+  ],
+  "output_files": ["workflow.json"]
+}

@@ -1,0 +1,117 @@
+<UserControl x:Class="DoaneDevTools.ToolWindows.ApiDriftChecker.ApiDriftCheckerWindowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" d:DesignHeight="550" d:DesignWidth="900"
+             Background="#F5F5F5">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis"/>
+        <Style x:Key="DoaneButton" TargetType="Button">
+            <Setter Property="Background" Value="#1F3864"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#1F3864" Padding="12,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Controller:" Foreground="White" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox Grid.Column="1" ItemsSource="{Binding ControllerFiles}"
+                          SelectedItem="{Binding SelectedController}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <TextBlock Grid.Column="2" Text="OpenAPI Spec:" Foreground="White" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox Grid.Column="3" ItemsSource="{Binding SpecFiles}"
+                          SelectedItem="{Binding SelectedSpec}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <StackPanel Grid.Column="5" Orientation="Horizontal">
+                    <Button Content="Analyze Drift" Style="{StaticResource DoaneButton}"
+                            Background="#FF7900" Command="{Binding AnalyzeCommand}"/>
+                    <Button Content="Sync Spec to Code" Style="{StaticResource DoaneButton}"
+                            Command="{Binding SyncSpecCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Summary bar -->
+        <Border Grid.Row="1" Background="#E8EAF0" Padding="12,5"
+                Visibility="{Binding HasReport, Converter={StaticResource BoolVis}}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ReportSummary}" FontWeight="SemiBold" Foreground="#1F3864"/>
+                <Separator Margin="12,0"/>
+                <TextBlock Foreground="#2E7D32" Text="{Binding InSyncCount, StringFormat='✓ {0} in sync'}"/>
+                <Separator Margin="8,0"/>
+                <TextBlock Foreground="#C62828" Text="{Binding DriftCount, StringFormat='✗ {0} drifted'}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Results grid -->
+        <DataGrid Grid.Row="2" ItemsSource="{Binding DriftItems}" AutoGenerateColumns="False"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  GridLinesVisibility="Horizontal" HeadersVisibility="Column">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="MissingFromSpec">
+                            <Setter Property="Background" Value="#FFEBEE"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="MissingFromCode">
+                            <Setter Property="Background" Value="#FFEBEE"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="ParameterMismatch">
+                            <Setter Property="Background" Value="#FFF3E0"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="InSync">
+                            <Setter Property="Background" Value="#F1F8E9"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Status" Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StatusIcon}" FontSize="14" FontWeight="Bold"
+                                       Foreground="{Binding StatusColor}" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Method" Binding="{Binding HttpMethod}" Width="70" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Route" Binding="{Binding Route}" Width="250" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Controller / Action" Width="200" IsReadOnly="True">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat="{}{0}.{1}">
+                            <Binding Path="ControllerName"/>
+                            <Binding Path="ActionName"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Detail" Binding="{Binding Description}" Width="*" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Status bar -->
+        <Border Grid.Row="3" Background="#2D2D2D" Padding="8,4">
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#AAAAAA" FontFamily="Consolas" FontSize="11"/>
+        </Border>
+    </Grid>
+</UserControl>

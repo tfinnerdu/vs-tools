@@ -1,0 +1,128 @@
+========================================================
+  DoaneDevTools — Project-Specific Build & Dev Commands
+========================================================
+
+All commands assume the repository root as the working directory unless
+noted otherwise. On Windows, use a Developer Command Prompt for VS 2022
+(or later) so that MSBuild and VSIXInstaller are on the PATH.
+
+--------------------------------------------------------
+BUILD
+--------------------------------------------------------
+
+# Full solution — Debug
+msbuild DoaneDevTools.sln /p:Configuration=Debug /m
+
+# Full solution — Release
+msbuild DoaneDevTools.sln /p:Configuration=Release /m
+
+# Single project fast build (VSIX only)
+msbuild DoaneDevTools.Vsix\DoaneDevTools.Vsix.csproj /p:Configuration=Debug
+
+# Clean all output folders
+msbuild DoaneDevTools.sln /t:Clean /p:Configuration=Debug
+msbuild DoaneDevTools.sln /t:Clean /p:Configuration=Release
+
+# Restore NuGet packages (if not using SDK-style auto-restore)
+dotnet restore DoaneDevTools.sln
+
+--------------------------------------------------------
+LAUNCH EXPERIMENTAL VISUAL STUDIO INSTANCE
+--------------------------------------------------------
+
+# Press F5 inside VS to launch — or from the command line:
+# The VSIX build target registers the extension in the Exp hive automatically.
+
+# Manually reset the Experimental Instance if it gets into a bad state:
+"C:\Program Files\Microsoft Visual Studio\2022\Professional\VSSDK\VisualStudioIntegration\Tools\Bin\CreateExpInstance.exe" /Reset /VSInstance=17.0 /RootSuffix=Exp
+
+# Or for VS 2026:
+"C:\Program Files\Microsoft Visual Studio\2026\Professional\VSSDK\VisualStudioIntegration\Tools\Bin\CreateExpInstance.exe" /Reset /VSInstance=18.0 /RootSuffix=Exp
+
+# Launch VS Experimental Instance manually (VS 2022):
+"C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\devenv.exe" /RootSuffix Exp
+
+# Launch VS Experimental Instance manually (VS 2026):
+"C:\Program Files\Microsoft Visual Studio\2026\Professional\Common7\IDE\devenv.exe" /RootSuffix Exp
+
+--------------------------------------------------------
+INSTALL / UNINSTALL VSIX MANUALLY
+--------------------------------------------------------
+
+# Install (quiet, no UI):
+"C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\VSIXInstaller.exe" /quiet DoaneDevTools.Vsix\bin\Release\DoaneDevTools.Vsix.vsix
+
+# Uninstall by extension ID:
+"C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\VSIXInstaller.exe" /uninstall:DoaneDevTools.1a2b3c4d-5e6f-7890-abcd-ef1234567890
+
+--------------------------------------------------------
+PACK ANALYZERS NUGET PACKAGE
+--------------------------------------------------------
+
+# Pack the NuGet for the analyzers (outputs to DoaneDevTools.Analyzers.NuGet\bin\Release\)
+dotnet pack DoaneDevTools.Analyzers.NuGet\DoaneDevTools.Analyzers.NuGet.csproj -c Release
+
+# Inspect the package contents before publishing:
+dotnet tool run nuget-package-explorer DoaneDevTools.Analyzers.NuGet\bin\Release\DoaneDevTools.Analyzers.*.nupkg
+
+# Push to a local feed for testing:
+nuget push DoaneDevTools.Analyzers.NuGet\bin\Release\DoaneDevTools.Analyzers.*.nupkg -Source "C:\LocalNuGetFeed"
+
+--------------------------------------------------------
+DEPLOY TO GITHUB PACKAGES
+--------------------------------------------------------
+
+# Authenticate (one-time per machine) — use a PAT with write:packages scope:
+dotnet nuget add source "https://nuget.pkg.github.com/DoaneUniversity/index.json" \
+    --name "github-doane" \
+    --username YOUR_GITHUB_USERNAME \
+    --password YOUR_GITHUB_PAT \
+    --store-password-in-clear-text
+
+# Push the packed NuGet to GitHub Packages:
+dotnet nuget push DoaneDevTools.Analyzers.NuGet\bin\Release\DoaneDevTools.Analyzers.*.nupkg \
+    --source "github-doane" \
+    --api-key YOUR_GITHUB_PAT
+
+# Push the VSIX as a GitHub Release asset (requires gh CLI):
+gh release create v1.0.0 DoaneDevTools.Vsix\bin\Release\DoaneDevTools.Vsix.vsix \
+    --repo DoaneUniversity/vs-tools \
+    --title "DoaneDevTools v1.0.0" \
+    --notes "Initial release"
+
+# Upload a new VSIX asset to an existing release:
+gh release upload v1.0.0 DoaneDevTools.Vsix\bin\Release\DoaneDevTools.Vsix.vsix \
+    --repo DoaneUniversity/vs-tools \
+    --clobber
+
+--------------------------------------------------------
+TESTING
+--------------------------------------------------------
+
+# Run analyzer unit tests (if a test project is added later):
+dotnet test DoaneDevTools.Analyzers.Tests\DoaneDevTools.Analyzers.Tests.csproj -c Debug
+
+# Run all tests in the solution:
+dotnet test DoaneDevTools.sln -c Debug --logger "trx;LogFileName=TestResults.trx"
+
+--------------------------------------------------------
+VSCT COMPILATION (manual, rarely needed)
+--------------------------------------------------------
+
+# If the VSCT file needs to be compiled standalone:
+"C:\Program Files\Microsoft Visual Studio\2022\Professional\VSSDK\VisualStudioIntegration\Tools\Bin\vsct.exe" \
+    DoaneDevTools.Vsix\DoaneDevToolsCommands.vsct \
+    DoaneDevTools.Vsix\obj\Debug\DoaneDevToolsCommands.cto
+
+--------------------------------------------------------
+USEFUL PATHS
+--------------------------------------------------------
+
+# VS 2022 SDK Tools:
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VSSDK\VisualStudioIntegration\Tools\Bin\
+
+# Experimental Instance registry hive (for troubleshooting):
+HKCU\Software\Microsoft\VisualStudio\17.0_<hash>Exp\
+
+# Extension deployment folder for Experimental Instance:
+%LocalAppData%\Microsoft\VisualStudio\17.0_<hash>Exp\Extensions\DoaneUniversity\DoaneDevTools\

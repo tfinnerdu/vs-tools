@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ service-name }}
+  namespace: prod
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: prod-{{ service-name }}-strip@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - du-int.doane.edu
+      secretName: wildcard-doane-tls
+  rules:
+    - host: du-int.doane.edu
+      http:
+        paths:
+          - path: /{{ service-name }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ service-name }}
+                port:
+                  number: 80

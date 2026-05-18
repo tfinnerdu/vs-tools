@@ -1,0 +1,12 @@
+{
+  "name": "ASP.NET Core Minimal Web API",
+  "category": "C#/.NET",
+  "description": "ASP.NET Core 8 minimal-API project with versioned routes, health endpoint, Serilog structured logging, and appsettings.json template.",
+  "variables": [
+    { "name": "service_name", "prompt": "Service name (PascalCase)", "type": "string" },
+    { "name": "namespace", "prompt": "Root namespace", "type": "string" },
+    { "name": "port", "prompt": "HTTPS port", "type": "int", "default": 7000 },
+    { "name": "api_version", "prompt": "API version prefix", "type": "string", "default": "v1" }
+  ],
+  "output_files": ["Program.cs", "appsettings.json", "appsettings.Development.json", "{{ service_name }}.csproj"]
+}

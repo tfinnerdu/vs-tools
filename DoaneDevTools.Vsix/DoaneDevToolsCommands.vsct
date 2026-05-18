@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DoaneDevToolsCommands.vsct
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  VSCT source file for the DoaneDevTools Visual Studio extension.
+
+  All menus, groups, and commands are declared here.  The compiled output
+  (Menus.ctmenu) is embedded in the VSIX assembly and referenced by the
+  [ProvideMenuResource("Menus.ctmenu", 1)] attribute on DoaneDevToolsPackage.
+
+  GUIDs and integer IDs must stay in sync with PackageGuids.cs / PackageIds.cs.
+
+  Layout
+  ------
+  Tools (built-in VS menu)
+  └── Doane Dev Tools  [submenu]
+      ├── Environment Manager...       Ctrl+Shift+E, Ctrl+Shift+E
+      ├── Template Builder...
+      ├── TODO Dashboard...
+      ├── Dependency Map...
+      ├── Assembly Inspector...
+      └── CSS Layout Inspector...
+-->
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- =====================================================================
+       Extern declarations — import built-in VS command IDs and GUIDs.
+  ====================================================================== -->
+  <Extern href="stdidcmd.h" />
+  <Extern href="vsshlids.h" />
+
+  <!-- =====================================================================
+       Commands block — defines all GUIDs, menus, groups, and buttons.
+  ====================================================================== -->
+  <Commands package="guidDoaneDevToolsPackage">
+
+    <!-- =================================================================
+         GUID symbol table
+    ================================================================== -->
+    <Buttons>
+      <!--
+        NOTE: GuidSymbol declarations live inside <Symbols> below.
+        This section only contains <Button> elements.  The symbols are
+        declared in the <Symbols> block at the end of this file.
+      -->
+    </Buttons>
+
+    <!-- =================================================================
+         Menus — the "Doane Dev Tools" submenu node
+    ================================================================== -->
+    <Menus>
+      <!--
+        A Menu of type MenuController would create a toolbar; we use
+        type Menu to create a simple drop-down submenu inside the VS
+        "Tools" top-level menu.
+      -->
+      <Menu guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenu"
+            priority="0x0100" type="Menu">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsMenuGroup" />
+        <Strings>
+          <ButtonText>Doane Dev Tools</ButtonText>
+          <CommandName>DoaneDevToolsSubMenu</CommandName>
+        </Strings>
+      </Menu>
+    </Menus>
+
+    <!-- =================================================================
+         Groups
+    ================================================================== -->
+    <Groups>
+
+      <!--
+        Group anchored to the built-in VS "Tools" menu.
+        guidSHLMainMenu / IDM_VS_MENU_TOOLS is the standard Tools menu GUID+ID.
+        Priority 0x0600 places it after the built-in tool entries and before
+        the Options separator.
+      -->
+      <Group guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsMenuGroup"
+             priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+      </Group>
+
+      <!--
+        Group that lives inside our submenu and holds the six commands.
+      -->
+      <Group guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup"
+             priority="0x0000">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenu" />
+      </Group>
+
+    </Groups>
+
+    <!-- =================================================================
+         Buttons (commands)
+    ================================================================== -->
+    <Buttons>
+
+      <!-- ---------------------------------------------------------------
+           0x0100  Open Environment Manager
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenEnvManagerCommandId"
+              priority="0x0100" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Environment Manager...</ButtonText>
+          <ToolTipText>Open the Environment Manager tool window to read, write, and diff .env and YAML config files.</ToolTipText>
+          <CommandName>OpenEnvManager</CommandName>
+          <CanonicalName>DoaneDevTools.OpenEnvManager</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenEnvManager</LocCanonicalName>
+        </Strings>
+      </Button>
+
+      <!-- ---------------------------------------------------------------
+           0x0101  Open Template Builder
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenTemplateBuilderCommandId"
+              priority="0x0101" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Template Builder...</ButtonText>
+          <ToolTipText>Open the Template Builder to scaffold Doane-standard projects, controllers, services, and test classes.</ToolTipText>
+          <CommandName>OpenTemplateBuilder</CommandName>
+          <CanonicalName>DoaneDevTools.OpenTemplateBuilder</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenTemplateBuilder</LocCanonicalName>
+        </Strings>
+      </Button>
+
+      <!-- ---------------------------------------------------------------
+           0x0102  Open TODO Dashboard
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenTodoDashboardCommandId"
+              priority="0x0102" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>TODO Dashboard...</ButtonText>
+          <ToolTipText>Open the TODO Dashboard to browse all TODO, FIXME, HACK, and UNDONE comments in the solution.</ToolTipText>
+          <CommandName>OpenTodoDashboard</CommandName>
+          <CanonicalName>DoaneDevTools.OpenTodoDashboard</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenTodoDashboard</LocCanonicalName>
+        </Strings>
+      </Button>
+
+      <!-- ---------------------------------------------------------------
+           0x0103  Open Dependency Map
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenDependencyMapCommandId"
+              priority="0x0103" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Dependency Map...</ButtonText>
+          <ToolTipText>Open the Dependency Map to visualise project-to-project and NuGet references with outdated-package highlighting.</ToolTipText>
+          <CommandName>OpenDependencyMap</CommandName>
+          <CanonicalName>DoaneDevTools.OpenDependencyMap</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenDependencyMap</LocCanonicalName>
+        </Strings>
+      </Button>
+
+      <!-- ---------------------------------------------------------------
+           0x0104  Open Assembly Inspector
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenAssemblyInspectorCommandId"
+              priority="0x0104" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Assembly Inspector...</ButtonText>
+          <ToolTipText>Open the Assembly Inspector (powered by ICSharpCode.Decompiler) to browse types, members, and IL of referenced assemblies.</ToolTipText>
+          <CommandName>OpenAssemblyInspector</CommandName>
+          <CanonicalName>DoaneDevTools.OpenAssemblyInspector</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenAssemblyInspector</LocCanonicalName>
+        </Strings>
+      </Button>
+
+      <!-- ---------------------------------------------------------------
+           0x0105  Open CSS Layout Inspector
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenCssInspectorCommandId"
+              priority="0x0105" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>CSS Layout Inspector...</ButtonText>
+          <ToolTipText>Open the CSS Layout Inspector to preview box-model, Flexbox, and Grid rules from your stylesheet files.</ToolTipText>
+          <CommandName>OpenCssInspector</CommandName>
+          <CanonicalName>DoaneDevTools.OpenCssInspector</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenCssInspector</LocCanonicalName>
+        </Strings>
+      </Button>
+
+      <!-- ---------------------------------------------------------------
+           0x0106  Open Test Data Seeder
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenTestDataSeederCommandId"
+              priority="0x0106" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Test Data Seeder...</ButtonText>
+          <ToolTipText>Open the Test Data Seeder to generate FK-consistent test data directly into SQL Server.</ToolTipText>
+          <CommandName>OpenTestDataSeeder</CommandName>
+          <CanonicalName>DoaneDevTools.OpenTestDataSeeder</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenTestDataSeeder</LocCanonicalName>
+        </Strings>
+      </Button>
+
+      <!-- ---------------------------------------------------------------
+           0x0107  Open API Drift Checker
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenApiDriftCheckerCommandId"
+              priority="0x0107" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>API Drift Checker...</ButtonText>
+          <ToolTipText>Compare C# controller actions against OpenAPI spec and detect drift.</ToolTipText>
+          <CommandName>OpenApiDriftChecker</CommandName>
+          <CanonicalName>DoaneDevTools.OpenApiDriftChecker</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenApiDriftChecker</LocCanonicalName>
+        </Strings>
+      </Button>
+
+      <!-- ---------------------------------------------------------------
+           0x0108  Open Solution Health Score
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenSolutionScoreCommandId"
+              priority="0x0108" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Solution Health Score...</ButtonText>
+          <ToolTipText>View the composite solution health score (0-100) with trend history.</ToolTipText>
+          <CommandName>OpenSolutionScore</CommandName>
+          <CanonicalName>DoaneDevTools.OpenSolutionScore</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenSolutionScore</LocCanonicalName>
+        </Strings>
+      </Button>
+
+      <!-- ---------------------------------------------------------------
+           0x0109  Open Code Query (Roslyn Scripting)
+      ---------------------------------------------------------------- -->
+      <Button guid="guidDoaneDevToolsCommandSet" id="OpenCodeQueryCommandId"
+              priority="0x0109" type="Button">
+        <Parent guid="guidDoaneDevToolsCommandSet" id="DoaneDevToolsSubMenuGroup" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Code Query (Roslyn)...</ButtonText>
+          <ToolTipText>Write LINQ queries over the live Roslyn compilation — the CQLinq equivalent.</ToolTipText>
+          <CommandName>OpenCodeQuery</CommandName>
+          <CanonicalName>DoaneDevTools.OpenCodeQuery</CanonicalName>
+          <LocCanonicalName>DoaneDevTools.OpenCodeQuery</LocCanonicalName>
+        </Strings>
+      </Button>
+
+    </Buttons>
+
+  </Commands>
+
+  <!-- =====================================================================
+       Key bindings
+       Ctrl+Shift+E, Ctrl+Shift+E  →  Environment Manager
+       (Chord shortcut; both keys must be pressed in sequence.)
+  ====================================================================== -->
+  <KeyBindings>
+    <KeyBinding guid="guidDoaneDevToolsCommandSet" id="OpenEnvManagerCommandId"
+                editor="guidVSStd97"
+                key1="E" mod1="Control Shift"
+                key2="E" mod2="Control Shift" />
+  </KeyBindings>
+
+  <!-- =====================================================================
+       Symbol declarations — must appear after <Commands> and <KeyBindings>.
+  ====================================================================== -->
+  <Symbols>
+
+    <!--
+      Package GUID — matches DoaneDevToolsPackage.PackageGuidString and the
+      [Guid] attribute on the package class.
+    -->
+    <GuidSymbol name="guidDoaneDevToolsPackage"
+                value="{a1b2c3d4-5e6f-7890-abcd-ef1234567890}" />
+
+    <!--
+      Command-set GUID — governs every menu, group, and button declared above.
+      Matches PackageGuids.DoaneDevToolsCommandSetGuidString.
+    -->
+    <GuidSymbol name="guidDoaneDevToolsCommandSet"
+                value="{a1b2c3d4-5e6f-7890-abcd-ef1234567891}">
+
+      <!-- Groups -->
+      <IDSymbol name="DoaneDevToolsMenuGroup"    value="0x0000" />
+      <IDSymbol name="DoaneDevToolsSubMenu"      value="0x0010" />
+      <IDSymbol name="DoaneDevToolsSubMenuGroup" value="0x0020" />
+
+      <!-- Commands -->
+      <IDSymbol name="OpenEnvManagerCommandId"       value="0x0100" />
+      <IDSymbol name="OpenTemplateBuilderCommandId"  value="0x0101" />
+      <IDSymbol name="OpenTodoDashboardCommandId"    value="0x0102" />
+      <IDSymbol name="OpenDependencyMapCommandId"    value="0x0103" />
+      <IDSymbol name="OpenAssemblyInspectorCommandId" value="0x0104" />
+      <IDSymbol name="OpenCssInspectorCommandId"     value="0x0105" />
+      <IDSymbol name="OpenTestDataSeederCommandId"   value="0x0106" />
+      <IDSymbol name="OpenApiDriftCheckerCommandId"  value="0x0107" />
+      <IDSymbol name="OpenSolutionScoreCommandId"    value="0x0108" />
+      <IDSymbol name="OpenCodeQueryCommandId"        value="0x0109" />
+
+    </GuidSymbol>
+
+    <!--
+      Placeholder GUID for the Office icon set referenced in <Icon> elements
+      above.  When real icons are added, replace this with the proper bitmap
+      catalog GUID (see PackageGuids.DoaneDevToolsImageCatalogGuid) and update
+      the id attributes to the correct strip offsets.
+    -->
+    <GuidSymbol name="guidOfficeIcon"
+                value="{6bb06a35-7a0e-4e01-83a3-1b93a8c37f90}">
+      <IDSymbol name="msotcidNoIcon" value="0x0001" />
+    </GuidSymbol>
+
+  </Symbols>
+
+</CommandTable>

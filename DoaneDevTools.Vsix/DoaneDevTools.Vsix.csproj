@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <UseVSSDK>true</UseVSSDK>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
+    <CreateVsixContainer>true</CreateVsixContainer>
+    <RootNamespace>DoaneDevTools</RootNamespace>
+    <AssemblyName>DoaneDevTools.Vsix</AssemblyName>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.31902.203" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5232" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="17.0.31902.203" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" Version="17.0.31902.203" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="8.1.0.7447" />
+    <PackageReference Include="LibGit2Sharp" Version="0.29.0" />
+    <PackageReference Include="YamlDotNet" Version="15.1.4" />
+    <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DoaneDevTools.Analyzers\DoaneDevTools.Analyzers.csproj" />
+    <ProjectReference Include="..\DoaneDevTools.ToolWindows\DoaneDevTools.ToolWindows.csproj" />
+    <ProjectReference Include="..\DoaneDevTools.Visualizers\DoaneDevTools.Visualizers.csproj" />
+  </ItemGroup>
+
+</Project>

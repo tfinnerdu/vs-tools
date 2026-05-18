@@ -1,0 +1,10 @@
+{
+  "name": "Flask Service (minimal)",
+  "category": "Python/Flask",
+  "description": "Minimal Flask service with health endpoint, structured JSON logging, and start-local.ps1",
+  "variables": [
+    { "name": "service_name", "prompt": "Service name (snake_case)", "type": "string" },
+    { "name": "port", "prompt": "Local port", "type": "int", "default": 5000 }
+  ],
+  "output_files": ["app.py", "start-local.ps1", "requirements.txt", ".env.example", ".gitignore"]
+}

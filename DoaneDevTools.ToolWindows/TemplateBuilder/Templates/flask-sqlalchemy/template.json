@@ -1,0 +1,12 @@
+{
+  "name": "Flask + SQLAlchemy (SQL Server)",
+  "category": "Python/Flask",
+  "description": "Flask service with SQLAlchemy ORM, SQL Server via pyodbc, health endpoint, structured JSON logging, and start-local.ps1",
+  "variables": [
+    { "name": "service_name", "prompt": "Service name (snake_case)", "type": "string" },
+    { "name": "port", "prompt": "Local port", "type": "int", "default": 5000 },
+    { "name": "db_server", "prompt": "SQL Server host (local)", "type": "string", "default": "localhost" },
+    { "name": "db_name", "prompt": "Database name", "type": "string" }
+  ],
+  "output_files": ["app.py", "db.py", "models.py", "start-local.ps1", "requirements.txt", ".env.example", ".gitignore"]
+}

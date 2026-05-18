@@ -1,0 +1,10 @@
+{
+  "name": "K8s Deployment + Service + Ingress",
+  "category": "Infrastructure",
+  "description": "Kubernetes Deployment, Service, Ingress, and Traefik stripPrefix Middleware manifests using Doane production standards (namespace: prod, host: du-int.doane.edu, TLS: wildcard-doane-tls, registry: doaneu/).",
+  "variables": [
+    { "name": "service-name", "prompt": "Service name (kebab-case)", "type": "string" },
+    { "name": "port", "prompt": "Container port", "type": "int", "default": 5000 }
+  ],
+  "output_files": ["deployment.yaml", "service.yaml", "ingress.yaml", "middleware.yaml"]
+}

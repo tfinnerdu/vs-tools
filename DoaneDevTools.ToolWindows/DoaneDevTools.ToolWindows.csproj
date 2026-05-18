@@ -1,0 +1,108 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <RootNamespace>DoaneDevTools.ToolWindows</RootNamespace>
+    <AssemblyName>DoaneDevTools.ToolWindows</AssemblyName>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.31902.203" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="17.0.31902.203" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" Version="17.0.31902.203" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.8.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.8.0" />
+    <PackageReference Include="YamlDotNet" Version="15.1.4" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="8.1.0.7447" />
+    <PackageReference Include="LibGit2Sharp" Version="0.29.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2045.28" />
+    <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.18" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TemplateBuilder\Templates\**\*" />
+  </ItemGroup>
+
+  <!-- Core tool windows: EnvManager, TemplateBuilder, TodoDashboard -->
+  <ItemGroup>
+    <!-- EnvManager -->
+    <Compile Include="EnvManager\EnvManagerWindow.cs" />
+    <Compile Include="EnvManager\EnvManagerWindowControl.xaml.cs" />
+    <Compile Include="EnvManager\EnvManagerViewModel.cs" />
+    <Page Include="EnvManager\EnvManagerWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+
+    <!-- TemplateBuilder -->
+    <Compile Include="TemplateBuilder\TemplateBuilderWindow.cs" />
+    <Compile Include="TemplateBuilder\TemplateBuilderWindowControl.xaml.cs" />
+    <Compile Include="TemplateBuilder\TemplateBuilderViewModel.cs" />
+    <Compile Include="TemplateBuilder\Models\TemplateManifest.cs" />
+    <Compile Include="TemplateBuilder\Services\TemplateService.cs" />
+    <Page Include="TemplateBuilder\TemplateBuilderWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+
+    <!-- TodoDashboard -->
+    <Compile Include="TodoDashboard\TodoDashboardWindow.cs" />
+    <Compile Include="TodoDashboard\TodoDashboardWindowControl.xaml.cs" />
+    <Compile Include="TodoDashboard\TodoDashboardViewModel.cs" />
+    <Compile Include="TodoDashboard\Models\TodoItem.cs" />
+    <Compile Include="TodoDashboard\Services\TodoScannerService.cs" />
+    <Compile Include="TodoDashboard\Services\TodoExportService.cs" />
+    <Page Include="TodoDashboard\TodoDashboardWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <!-- Additional tool windows (TestDataSeeder, ApiDriftChecker, SolutionScore, CodeQuery) -->
+  <ItemGroup>
+    <Compile Include="TestDataSeeder\TestDataSeederWindow.cs" />
+    <Compile Include="TestDataSeeder\TestDataSeederWindowControl.xaml.cs" />
+    <Compile Include="TestDataSeeder\TestDataSeederViewModel.cs" />
+    <Compile Include="TestDataSeeder\Models\TableSeedConfig.cs" />
+    <Compile Include="TestDataSeeder\Services\SchemaInspectorService.cs" />
+    <Compile Include="TestDataSeeder\Services\TopologicalSortService.cs" />
+    <Compile Include="TestDataSeeder\Services\FakerDataService.cs" />
+    <Compile Include="TestDataSeeder\Services\SqlSeedService.cs" />
+    <Page Include="TestDataSeeder\TestDataSeederWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="ApiDriftChecker\ApiDriftCheckerWindow.cs" />
+    <Compile Include="ApiDriftChecker\ApiDriftCheckerWindowControl.xaml.cs" />
+    <Compile Include="ApiDriftChecker\ApiDriftCheckerViewModel.cs" />
+    <Compile Include="ApiDriftChecker\Models\DriftReport.cs" />
+    <Compile Include="ApiDriftChecker\Services\ControllerAnalyzerService.cs" />
+    <Compile Include="ApiDriftChecker\Services\OpenApiParserService.cs" />
+    <Compile Include="ApiDriftChecker\Services\DriftAnalyzerService.cs" />
+    <Page Include="ApiDriftChecker\ApiDriftCheckerWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="SolutionScore\SolutionScoreWindow.cs" />
+    <Compile Include="SolutionScore\SolutionScoreWindowControl.xaml.cs" />
+    <Compile Include="SolutionScore\SolutionScoreViewModel.cs" />
+    <Page Include="SolutionScore\SolutionScoreWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="CodeQuery\CodeQueryWindow.cs" />
+    <Compile Include="CodeQuery\CodeQueryWindowControl.xaml.cs" />
+    <Compile Include="CodeQuery\CodeQueryViewModel.cs" />
+    <Page Include="CodeQuery\CodeQueryWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+</Project>

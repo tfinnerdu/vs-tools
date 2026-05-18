@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>DoaneAnalyzers</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Doane University IT</Authors>
+    <Description>Roslyn analyzers and code fixes for Doane University development standards.</Description>
+    <PackageTags>roslyn analyzer doane csharp</PackageTags>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DoaneDevTools.Analyzers\DoaneDevTools.Analyzers.csproj" />
+  </ItemGroup>
+</Project>
