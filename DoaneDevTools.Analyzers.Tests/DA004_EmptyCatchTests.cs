@@ -62,7 +62,8 @@ class C {
         [Fact]
         public async Task CodeFix_AddsLoggingStub()
         {
-            // The fix inserts a TODO comment and _logger?.LogError(...) call
+            // The fix inserts a TODO comment and _logger?.LogError(...) call.
+            // Note: exact whitespace is normalised by the Roslyn formatter.
             var before = @"
 class C {
     void MyMethod() {
@@ -79,8 +80,7 @@ class C {
     void MyMethod() {
         try { int x = 1; }
         catch {
-
-// TODO: handle exception
+            // TODO: handle exception
             _logger?.LogError(ex, ""Unhandled exception in {Method}"", nameof(MyMethod));
         }
     }
