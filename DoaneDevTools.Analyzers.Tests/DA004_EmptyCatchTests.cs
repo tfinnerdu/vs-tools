@@ -9,8 +9,6 @@ namespace DoaneDevTools.Analyzers.Tests
 {
     public class DA004_EmptyCatchTests
     {
-        private const string Id = "DA004";
-
         [Fact]
         public async Task NoDiagnostic_CatchWithStatement()
         {
@@ -28,56 +26,67 @@ class C {
         [Fact]
         public async Task Diagnostic_EmptyCatchBlock()
         {
+            // Diagnostic fires at the `catch` keyword; DA004 has Error severity
             var source = @"
 class C {
     void M() {
         try { int x = 1; }
-        {|DA004:catch|} { }
+        catch { }
     }
 }";
-            await AnalyzerVerifier<DA004_EmptyCatchAnalyzer>.VerifyAnalyzerAsync(source,
-                DiagnosticResult.CompilerWarning(Id).WithNoLocation());
+            var expected = new DiagnosticResult("DA004", Microsoft.CodeAnalysis.DiagnosticSeverity.Error)
+                .WithLocation(5, 9);
+
+            await AnalyzerVerifier<DA004_EmptyCatchAnalyzer>.VerifyAnalyzerAsync(source, expected);
         }
 
         [Fact]
-        public async Task NoDiagnostic_AsyncTaskMethod()
+        public async Task Diagnostic_CatchWithOnlyComment()
         {
+            // Comments are trivia — parser produces no Statement nodes → block is empty
             var source = @"
-using System;
 class C {
     void M() {
-        try { throw new Exception(); }
-        catch (Exception ex) {
-            _ = ex.Message;
-            throw;
+        try { int x = 1; }
+        catch {
+            // swallowed intentionally
         }
     }
 }";
-            await AnalyzerVerifier<DA004_EmptyCatchAnalyzer>.VerifyAnalyzerAsync(source);
+            var expected = new DiagnosticResult("DA004", Microsoft.CodeAnalysis.DiagnosticSeverity.Error)
+                .WithLocation(5, 9);
+
+            await AnalyzerVerifier<DA004_EmptyCatchAnalyzer>.VerifyAnalyzerAsync(source, expected);
         }
 
         [Fact]
         public async Task CodeFix_AddsLoggingStub()
         {
+            // The fix inserts a TODO comment and _logger?.LogError(...) call
             var before = @"
 class C {
     void MyMethod() {
         try { int x = 1; }
-        {|DA004:catch|} { }
+        catch { }
     }
 }";
+            // Expected diagnostic at the `catch` keyword
+            var expected = new DiagnosticResult("DA004", Microsoft.CodeAnalysis.DiagnosticSeverity.Error)
+                .WithLocation(5, 9);
+
             var after = @"
 class C {
     void MyMethod() {
         try { int x = 1; }
         catch {
-            // TODO: handle exception
+
+// TODO: handle exception
             _logger?.LogError(ex, ""Unhandled exception in {Method}"", nameof(MyMethod));
         }
     }
 }";
             await CodeFixVerifier<DA004_EmptyCatchAnalyzer, DA004_EmptyCatchFix>
-                .VerifyCodeFixAsync(before, after);
+                .VerifyCodeFixAsync(before, expected, after);
         }
     }
 }

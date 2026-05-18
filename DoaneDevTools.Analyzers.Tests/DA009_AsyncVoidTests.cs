@@ -45,12 +45,14 @@ class C {
         {
             var source = @"
 class C {
-    public async void {|DA009:DoWork|}() { await System.Threading.Tasks.Task.CompletedTask; }
+    public async void DoWork() { await System.Threading.Tasks.Task.CompletedTask; }
 }";
-            await AnalyzerVerifier<DA009_AsyncVoidAnalyzer>.VerifyAnalyzerAsync(source,
-                DiagnosticResult.CompilerWarning("DA009")
-                    .WithArguments("DoWork")
-                    .WithNoLocation());
+            // Diagnostic at the method identifier "DoWork" (line 3, col 23)
+            var expected = new DiagnosticResult("DA009", Microsoft.CodeAnalysis.DiagnosticSeverity.Warning)
+                .WithLocation(3, 23)
+                .WithArguments("DoWork");
+
+            await AnalyzerVerifier<DA009_AsyncVoidAnalyzer>.VerifyAnalyzerAsync(source, expected);
         }
 
         [Fact]

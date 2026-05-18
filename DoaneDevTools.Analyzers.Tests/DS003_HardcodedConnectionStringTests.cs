@@ -34,10 +34,13 @@ class C {
         {
             var source = @"
 class C {
-    void M() { var cs = {|DS003:""Server=myserver;Database=mydb;Trusted_Connection=True;""}; }
+    void M() { var cs = ""Server=myserver;Database=mydb;Trusted_Connection=True;""; }
 }";
-            await AnalyzerVerifier<DS003_HardcodedConnectionStringAnalyzer>.VerifyAnalyzerAsync(source,
-                DiagnosticResult.CompilerError("DS003").WithNoLocation());
+            // String literal starts at col 25 (after `var cs = `)
+            var expected = new DiagnosticResult("DS003", Microsoft.CodeAnalysis.DiagnosticSeverity.Error)
+                .WithLocation(3, 25);
+
+            await AnalyzerVerifier<DS003_HardcodedConnectionStringAnalyzer>.VerifyAnalyzerAsync(source, expected);
         }
 
         [Fact]
@@ -45,10 +48,12 @@ class C {
         {
             var source = @"
 class C {
-    void M() { var cs = {|DS003:""password=supersecret123""}; }
+    void M() { var cs = ""password=supersecret123""; }
 }";
-            await AnalyzerVerifier<DS003_HardcodedConnectionStringAnalyzer>.VerifyAnalyzerAsync(source,
-                DiagnosticResult.CompilerError("DS003").WithNoLocation());
+            var expected = new DiagnosticResult("DS003", Microsoft.CodeAnalysis.DiagnosticSeverity.Error)
+                .WithLocation(3, 25);
+
+            await AnalyzerVerifier<DS003_HardcodedConnectionStringAnalyzer>.VerifyAnalyzerAsync(source, expected);
         }
 
         [Fact]
@@ -56,10 +61,13 @@ class C {
         {
             var source = @"
 class C {
-    string ConnStr = {|DS003:""Data Source=localhost;Initial Catalog=MyDb;""|};
+    string ConnStr = ""Data Source=localhost;Initial Catalog=MyDb;"";
 }";
-            await AnalyzerVerifier<DS003_HardcodedConnectionStringAnalyzer>.VerifyAnalyzerAsync(source,
-                DiagnosticResult.CompilerError("DS003").WithNoLocation());
+            // String literal in field initializer
+            var expected = new DiagnosticResult("DS003", Microsoft.CodeAnalysis.DiagnosticSeverity.Error)
+                .WithLocation(3, 22);
+
+            await AnalyzerVerifier<DS003_HardcodedConnectionStringAnalyzer>.VerifyAnalyzerAsync(source, expected);
         }
     }
 }

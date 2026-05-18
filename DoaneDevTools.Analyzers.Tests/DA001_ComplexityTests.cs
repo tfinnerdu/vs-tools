@@ -25,10 +25,10 @@ class C {
         [Fact]
         public async Task Diagnostic_HighComplexity()
         {
-            // 16 if-branches → CC = 17, exceeds threshold of 15
+            // 16 if-branches → CC = 17, which exceeds the threshold of 15
             var source = @"
 class C {
-    int {|DA001:HighCC|}(int x) {
+    int HighCC(int x) {
         if (x == 1) return 1;
         if (x == 2) return 2;
         if (x == 3) return 3;
@@ -48,8 +48,12 @@ class C {
         return 0;
     }
 }";
-            await AnalyzerVerifier<DA001_ComplexityAnalyzer>.VerifyAnalyzerAsync(source,
-                DiagnosticResult.CompilerWarning("DA001").WithNoLocation());
+            // Diagnostic at the method identifier "HighCC" on line 3, col 9
+            var expected = new DiagnosticResult("DA001", Microsoft.CodeAnalysis.DiagnosticSeverity.Warning)
+                .WithLocation(3, 9)
+                .WithArguments("HighCC", 17);
+
+            await AnalyzerVerifier<DA001_ComplexityAnalyzer>.VerifyAnalyzerAsync(source, expected);
         }
     }
 }

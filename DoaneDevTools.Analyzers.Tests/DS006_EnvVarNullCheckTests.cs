@@ -46,16 +46,19 @@ class C {
         [Fact]
         public async Task Diagnostic_BareLocalDeclaration()
         {
-            // GetEnvironmentVariable result stored in a local with no guard — fires at the call site
+            // GetEnvironmentVariable result stored in a local with no null guard
             var source = @"
 using System;
 class C {
     void M() {
-        string v = {|DS006:Environment.GetEnvironmentVariable(""X"")|};
+        string v = Environment.GetEnvironmentVariable(""X"");
     }
 }";
-            await AnalyzerVerifier<DS006_EnvVarNullCheckAnalyzer>.VerifyAnalyzerAsync(source,
-                DiagnosticResult.CompilerWarning("DS006").WithNoLocation());
+            // The invocation starts at "Environment.GetEnvironmentVariable" — line 5, col 20
+            var expected = new DiagnosticResult("DS006", Microsoft.CodeAnalysis.DiagnosticSeverity.Warning)
+                .WithLocation(5, 20);
+
+            await AnalyzerVerifier<DS006_EnvVarNullCheckAnalyzer>.VerifyAnalyzerAsync(source, expected);
         }
 
         [Fact]
@@ -65,11 +68,14 @@ class C {
 using System;
 class C {
     void M() {
-        Console.WriteLine({|DS006:Environment.GetEnvironmentVariable(""KEY"")|});
+        Console.WriteLine(Environment.GetEnvironmentVariable(""KEY""));
     }
 }";
-            await AnalyzerVerifier<DS006_EnvVarNullCheckAnalyzer>.VerifyAnalyzerAsync(source,
-                DiagnosticResult.CompilerWarning("DS006").WithNoLocation());
+            // Invocation at line 5, col 27
+            var expected = new DiagnosticResult("DS006", Microsoft.CodeAnalysis.DiagnosticSeverity.Warning)
+                .WithLocation(5, 27);
+
+            await AnalyzerVerifier<DS006_EnvVarNullCheckAnalyzer>.VerifyAnalyzerAsync(source, expected);
         }
     }
 }
