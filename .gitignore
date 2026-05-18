@@ -1,0 +1,23 @@
+# Build outputs
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Test results
+test-results/
+*.trx
+*.coverage
+
+# Claude Code internal state
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
