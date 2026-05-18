@@ -1,13 +1,7 @@
 name: Analyzer Tests
 
 on:
-  push:
-    paths:
-      - 'DoaneDevTools.Analyzers/**'
-      - 'DoaneDevTools.Analyzers.Tests/**'
-  pull_request:
-    paths:
-      - 'DoaneDevTools.Analyzers/**'
+  workflow_dispatch: # manual trigger only — re-enable push/PR when ready to ship
 
 jobs:
   test:
