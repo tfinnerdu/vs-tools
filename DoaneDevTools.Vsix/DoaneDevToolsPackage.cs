@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using DoaneDevTools.Commands;
+using DoaneDevTools.Options;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -56,6 +57,8 @@ namespace DoaneDevTools
         Style = VsDockStyle.Float)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string,
         PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideOptionPage(typeof(DoaneDevToolsOptions),
+        "Doane Dev Tools", "General", 0, 0, supportsAutomation: true)]
     public sealed class DoaneDevToolsPackage : AsyncPackage
     {
         // --------------------------------------------------------------------
@@ -71,6 +74,14 @@ namespace DoaneDevTools
 
         /// <summary>Parsed <see cref="Guid"/> of this package.</summary>
         public static readonly Guid PackageGuid = new Guid(PackageGuidString);
+
+        /// <summary>Singleton instance set during <see cref="InitializeAsync"/>.</summary>
+        public static DoaneDevToolsPackage? Instance { get; private set; }
+
+        /// <summary>Retrieves the current options page, or a default instance if the package has not loaded.</summary>
+        public static DoaneDevToolsOptions Options =>
+            Instance?.GetDialogPage(typeof(DoaneDevToolsOptions)) as DoaneDevToolsOptions
+            ?? new DoaneDevToolsOptions();
 
         // --------------------------------------------------------------------
         // AsyncPackage overrides
@@ -93,6 +104,7 @@ namespace DoaneDevTools
             IProgress<ServiceProgressData> progress)
         {
             await base.InitializeAsync(cancellationToken, progress);
+            Instance = this;
 
             // Switch to the UI thread for command registration.
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
