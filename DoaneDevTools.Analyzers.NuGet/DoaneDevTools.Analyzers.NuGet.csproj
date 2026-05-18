@@ -35,4 +35,8 @@
           Visible="false"
           Condition="Exists('..\DoaneDevTools.Analyzers\bin\$(Configuration)\netstandard2.0\DoaneDevTools.Analyzers.pdb')" />
   </ItemGroup>
+  <!-- Include build props so consuming projects suppress CS8032 -->
+  <ItemGroup>
+    <None Include="build\DoaneAnalyzers.props" Pack="true" PackagePath="build" Visible="false" />
+  </ItemGroup>
 </Project>

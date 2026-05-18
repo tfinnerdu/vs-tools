@@ -1,0 +1,10 @@
+<Project>
+  <!--
+    Silence CS8032 "An instance of analyzer cannot be created" warnings that appear
+    when a project references this package but the analyzer DLL can't be loaded at
+    design time (e.g. wrong .NET version for the IDE process).
+  -->
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CS8032</NoWarn>
+  </PropertyGroup>
+</Project>

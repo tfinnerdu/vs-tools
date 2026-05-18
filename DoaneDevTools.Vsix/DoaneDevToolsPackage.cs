@@ -1,9 +1,11 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using DoaneDevTools.Commands;
 using DoaneDevTools.Options;
+using DoaneDevTools.Vsix.Services;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -119,6 +121,25 @@ namespace DoaneDevTools
             await OpenApiDriftCheckerCommand.InitializeAsync(this);
             await OpenSolutionScoreCommand.InitializeAsync(this);
             await OpenCodeQueryCommand.InitializeAsync(this);
+
+            // Install/update the pre-commit secret scanning hook for the open solution
+            _ = Task.Run(() => TryInstallPreCommitHook());
+        }
+
+        private void TryInstallPreCommitHook()
+        {
+            try
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                var solution = GetService(typeof(SVsSolution)) as IVsSolution;
+                solution?.GetSolutionInfo(out var solutionDir, out _, out _);
+                if (!string.IsNullOrEmpty(solutionDir) &&
+                    Directory.Exists(Path.Combine(solutionDir, ".git")))
+                {
+                    PreCommitHookInstaller.InstallOrUpdate(solutionDir);
+                }
+            }
+            catch { /* non-critical — don't surface to user */ }
         }
 
         // --------------------------------------------------------------------

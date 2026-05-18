@@ -33,6 +33,16 @@
     </Content>
   </ItemGroup>
 
+  <!-- Include LibGit2Sharp native binaries in the VSIX -->
+  <ItemGroup>
+    <Content Include="$(OutputPath)lib\win32\x86\git2-*.dll"
+             Condition="Exists('$(OutputPath)lib\win32\x86\')"
+             IncludeInVSIX="true" VSIXSubPath="lib\win32\x86\" />
+    <Content Include="$(OutputPath)lib\win32\x64\git2-*.dll"
+             Condition="Exists('$(OutputPath)lib\win32\x64\')"
+             IncludeInVSIX="true" VSIXSubPath="lib\win32\x64\" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\DoaneDevTools.Analyzers\DoaneDevTools.Analyzers.csproj" />
     <ProjectReference Include="..\DoaneDevTools.ToolWindows\DoaneDevTools.ToolWindows.csproj" />

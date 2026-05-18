@@ -8,11 +8,8 @@
               Publisher="Doane University IT Development" />
     <DisplayName>DoaneDevTools — Doane Developer Extension</DisplayName>
     <Description xml:space="preserve">Roslyn analyzers, code fixes, dependency mapping, env manager, template builder, and debug visualizers for Doane University development standards.</Description>
-    <MoreInfo>https://github.com/DoaneUniversity/vs-tools</MoreInfo>
-    <License>LICENSE.txt</License>
-    <Tags>code-analysis roslyn analyzers productivity</Tags>
-    <Icon>Resources\DoaneDevTools.png</Icon>
-    <PreviewImage>Resources\DoaneDevToolsPreview.png</PreviewImage>
+    <MoreInfo>https://github.com/tfinnerdu/vs-tools</MoreInfo>
+    <Tags>code-analysis roslyn analyzers productivity doane</Tags>
   </Metadata>
   <Installation AllUsers="false">
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)" />

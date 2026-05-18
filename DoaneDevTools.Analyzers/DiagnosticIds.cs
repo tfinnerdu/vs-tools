@@ -17,7 +17,6 @@ namespace DoaneDevTools.Analyzers
         public const string DA012 = "DA012";
 
         // Doane stack
-        public const string DS001 = "DS001";
         public const string DS002 = "DS002";
         public const string DS003 = "DS003";
         public const string DS004 = "DS004";
@@ -25,5 +24,10 @@ namespace DoaneDevTools.Analyzers
         public const string DS006 = "DS006";
         public const string DS007 = "DS007";
         public const string DS008 = "DS008";
+        public const string DS009 = "DS009";
+        public const string DS010 = "DS010";
+
+        // Security
+        public const string DSSEC = "DSSEC";
     }
 }
